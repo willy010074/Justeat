@@ -25,9 +25,30 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         lv = (ListView) findViewById(R.id.list);
+        Intent it = this.getIntent();
+        int index = it.getIntExtra("200",0);
+
+        String input="breakfast";
+        switch (index) {
+            case 0:
+                input = "breakfast";
+                break;
+
+            case 1:
+                input = "brunch";
+                break;
+
+            case 2:
+                input = "lunch";
+                break;
+
+            case 3:
+                input = "dinner";
+                break;
+        }
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1);
-        DatabaseReference breakdast = FirebaseDatabase.getInstance().getReference("breakfast");
+        DatabaseReference breakdast = FirebaseDatabase.getInstance().getReference(input);
 
         breakdast.addValueEventListener(new ValueEventListener() {
             @Override

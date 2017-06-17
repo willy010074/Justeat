@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
     public void gotolist(View v)
     {
+        int index = time_sp.getSelectedItemPosition();
         Intent balance_it = new Intent(this,ListActivity.class);
+        balance_it.putExtra("200",index);
         startActivity(balance_it);
     }
 
