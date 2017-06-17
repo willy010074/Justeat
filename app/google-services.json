@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "410794338942",
+    "firebase_url": "https://justeat-81e27.firebaseio.com",
+    "project_id": "justeat-81e27",
+    "storage_bucket": "justeat-81e27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410794338942:android:8099e9b1f6020806",
+        "android_client_info": {
+          "package_name": "com.example.chungyu.justeat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410794338942-747rit6b3nsq2of1ricthbs5a411fj41.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chungyu.justeat",
+            "certificate_hash": "4d8305233a3404b0b4b30bac031083d4583cf297"
+          }
+        },
+        {
+          "client_id": "410794338942-2s318oj4tm01rg24u7q0diaqg0g8do93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEL3SNbUfjjP1v2cOPPjyTGwOalmlQSos"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410794338942-2s318oj4tm01rg24u7q0diaqg0g8do93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
