@@ -4,4 +4,11 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string-array name="time">
+        <item>早餐</item>
+        <item>早午餐</item>
+        <item>午餐</item>
+        <item>晚餐</item>
+    </string-array>
 </resources>
