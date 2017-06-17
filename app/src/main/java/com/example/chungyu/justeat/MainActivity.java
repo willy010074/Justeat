@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
     Random random;
     int idx;
     int flag;
+    int breakfast_num=50;
+    int brunch_num=50;
+    int lunch_num=50;
+    int dinner_num=50;
 
     Toast tos;
     Spinner time_sp;
@@ -42,21 +46,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         tos = Toast.makeText(this,"",Toast.LENGTH_SHORT);
         time_sp = (Spinner) findViewById(R.id.spinner_time);
 
-        /*flag = 0;
-        myBreakFast = db.getReference("breakfast");
-        myBreakFast.addChildEventListener(this);*/
 
-        /*flag = 1;
-        myBrunch = db.getReference("brunch");
-        myBrunch.addChildEventListener(this);
-
-        /*flag = 2;
-        myLunch = db.getReference("lunch");
-        myLunch.addChildEventListener(this);
-
-        flag = 3;
-        myDinner = db.getReference("dinner");
-        myDinner.addChildEventListener(this);*/
     }
 
     public void gotolist(View v)
@@ -69,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         random = new Random();
         idx = random.nextInt(100000);
 
-        String[] times = getResources().getStringArray(R.array.time);
+        //String[] times = getResources().getStringArray(R.array.time);
         int index = time_sp.getSelectedItemPosition();
         switch (index) {
             case 0:
@@ -96,18 +86,18 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
                 break;
 
             case 1:
-                final ArrayList<String> result_Branch = new ArrayList<String>();
+                final ArrayList<String> result_Brunch = new ArrayList<String>();
                 DatabaseReference db_brunch = FirebaseDatabase.getInstance().getReference("brunch");
                 db_brunch.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        result_Branch.clear();
+                        result_Brunch.clear();
                         for (DataSnapshot ds : dataSnapshot.getChildren() ){
-                            result_Branch.add(ds.child("name").getValue().toString());
+                            result_Brunch.add(ds.child("name").getValue().toString());
                         }
 
-                        idx = idx % result_Branch.size();
-                        txv.setText(result_Branch.get(idx));
+                        idx = idx % result_Brunch.size();
+                        txv.setText(result_Brunch.get(idx));
                     }
 
                     @Override
@@ -164,16 +154,108 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         }
     }
 
-    /*public void push(View V){
+    public void push(View V){
         //LayoutInflater inflater = this.getLayoutInflater();
         final View view = View.inflate(this,R.layout.my_dialog,null);
         final EditText text_name = (EditText) view.findViewById(R.id.name);
         final EditText text_addr = (EditText) view.findViewById(R.id.addr);
+        final Spinner sp_time = (Spinner) view.findViewById(R.id.sp_time);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("請輸入店名及地址").setView(view).setPositiveButton("Ok",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id){
-                myBreakFast.child(String.valueOf(result_Breakfast.size()+1)).child("name").setValue(text_name.getText().toString());
-                myBreakFast.child(String.valueOf(result_Breakfast.size()+1)).child("addr").setValue(text_addr.getText().toString());
+                int index = sp_time.getSelectedItemPosition();
+                switch (index) {
+                    case 0:
+                        final ArrayList<String> resultBreakfast = new ArrayList<String>();
+                        DatabaseReference db_breakfast = FirebaseDatabase.getInstance().getReference("breakfast");
+                        db_breakfast.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                resultBreakfast.clear();
+                                for (DataSnapshot ds : dataSnapshot.getChildren() ){
+                                    resultBreakfast.add(ds.child("name").getValue().toString());
+                                    breakfast_num++;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        db_breakfast.child(String.valueOf(breakfast_num)).child("name").setValue(text_name.getText().toString());
+                        db_breakfast.child(String.valueOf(breakfast_num)).child("addr").setValue(text_addr.getText().toString());
+
+                        break;
+
+                    case 1:
+                        final ArrayList<String> resultBrunch = new ArrayList<String>();
+                        DatabaseReference db_brunch = FirebaseDatabase.getInstance().getReference("brunch");
+                        db_brunch.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                resultBrunch.clear();
+                                for (DataSnapshot ds : dataSnapshot.getChildren() ){
+                                    resultBrunch.add(ds.child("name").getValue().toString());
+                                    brunch_num++;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        db_brunch.child(String.valueOf(brunch_num)).child("name").setValue(text_name.getText().toString());
+                        db_brunch.child(String.valueOf(brunch_num)).child("addr").setValue(text_addr.getText().toString());
+
+                        break;
+
+                    case 2:
+                        final ArrayList<String> resultLunch = new ArrayList<String>();
+                        DatabaseReference db_lunch = FirebaseDatabase.getInstance().getReference("lunch");
+                        db_lunch.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                resultLunch.clear();
+                                for (DataSnapshot ds : dataSnapshot.getChildren() ){
+                                    resultLunch.add(ds.child("name").getValue().toString());
+                                    lunch_num++;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        db_lunch.child(String.valueOf(lunch_num)).child("name").setValue(text_name.getText().toString());
+                        db_lunch.child(String.valueOf(lunch_num)).child("addr").setValue(text_addr.getText().toString());
+
+                        break;
+
+                    case 3:
+                        final ArrayList<String> resultDinner = new ArrayList<String>();
+                        DatabaseReference db_dinner = FirebaseDatabase.getInstance().getReference("dinner");
+                        db_dinner.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                resultDinner.clear();
+                                for (DataSnapshot ds : dataSnapshot.getChildren() ){
+                                    resultDinner.add(ds.child("name").getValue().toString());
+                                    dinner_num++;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        db_dinner.child(String.valueOf(dinner_num)).child("name").setValue(text_name.getText().toString());
+                        db_dinner.child(String.valueOf(dinner_num)).child("addr").setValue(text_addr.getText().toString());
+                        break;
+                }
                 tos.setText("成功新增"+text_name.getText().toString()+"!!");
                 tos.show();
             }
@@ -184,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }*/
+    }
 
 
 
