@@ -1,15 +1,19 @@
 package com.example.chungyu.justeat;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,11 +31,9 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
     Random random;
     int idx;
     int len;
-    String text_name = "";
-    String text_addr = "";
     ArrayList<String> result ;
     DatabaseReference myRef;
-
+    Toast tos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         myRef = db.getReference("breakfast");
         myRef.addChildEventListener(this);
+        tos = Toast.makeText(this,"",Toast.LENGTH_SHORT);
     }
 
     public void gotolist(View v)
@@ -58,36 +61,31 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
         idx = idx % result.size();
         txv.setText(result.get(idx));
-
-
     }
 
-    public void write(View V) {
+    public void push(View V){
+        //LayoutInflater inflater = this.getLayoutInflater();
+        final View view = View.inflate(this,R.layout.my_dialog,null);
+        final EditText text_name = (EditText) view.findViewById(R.id.name);
+        final EditText text_addr = (EditText) view.findViewById(R.id.addr);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("請輸入店名及地址");
-
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                text_name = input.getText().toString();
-                myRef.child(String.valueOf(result.size()+1)).child("name").setValue(text_name);
+        builder.setTitle("請輸入店名及地址").setView(view).setPositiveButton("Ok",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id){
+                myRef.child(String.valueOf(result.size()+1)).child("name").setValue(text_name.getText().toString());
+                myRef.child(String.valueOf(result.size()+1)).child("addr").setValue(text_addr.getText().toString());
+                tos.setText("成功新增"+text_name.getText().toString()+"!!");
+                tos.show();
             }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        }).setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int id){
                 dialog.cancel();
             }
         });
-
-        builder.show();
-
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
+
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
