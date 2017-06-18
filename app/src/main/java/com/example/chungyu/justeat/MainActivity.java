@@ -2,10 +2,12 @@ package com.example.chungyu.justeat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
     TextView txv;
     Random random;
+    Button btn_map;
     int idx;
     int flag;
     int breakfast_num=50;
@@ -45,8 +48,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         db = FirebaseDatabase.getInstance();
         tos = Toast.makeText(this,"",Toast.LENGTH_SHORT);
         time_sp = (Spinner) findViewById(R.id.spinner_time);
-
-
+        btn_map = (Button) findViewById(R.id.btn_map);
     }
 
     public void gotolist(View v)
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
                         idx = idx % resultBreakfast.size();
                         txv.setText(resultBreakfast.get(idx));
+                        btn_map.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
                         idx = idx % result_Brunch.size();
                         txv.setText(result_Brunch.get(idx));
+                        btn_map.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
                         idx = idx % result_Lunch.size();
                         txv.setText(result_Lunch.get(idx));
+                        btn_map.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -145,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
 
                         idx = idx % result_Dinner.size();
                         txv.setText(result_Dinner.get(idx));
+                        btn_map.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -270,29 +276,18 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         dialog.show();
     }
 
+    public void gogomap(View V){
+        String temp = "geo:0,0?q=";
+        temp += txv.getText().toString();
+        Uri myUri = Uri.parse(temp);
+        Intent it = new Intent(Intent.ACTION_VIEW,myUri);
+        startActivity(it);
+    }
+
 
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        //result.add(String.valueOf(dataSnapshot.child("name").getValue().toString()));
-        /*txv.setText(Integer.toString(flag));
-        switch (flag) {
-            case 0:
-                result_Breakfast.add(String.valueOf(dataSnapshot.child("name").getValue().toString()));
-                break;
-
-            case 1:
-                result_Brunch.add(String.valueOf(dataSnapshot.child("name").getValue().toString()));
-                break;
-
-            case 2:
-                result_Lunch.add(String.valueOf(dataSnapshot.child("name").getValue().toString()));
-                break;
-
-            case 3:
-                result_Dinner.add(String.valueOf(dataSnapshot.child("name").getValue().toString()));
-                break;
-        }*/
 
     }
 
