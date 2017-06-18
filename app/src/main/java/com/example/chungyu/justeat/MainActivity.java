@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements ChildEventListener {
+public class MainActivity extends AppCompatActivity {
 
     TextView txv;
     Random random;
@@ -44,15 +44,41 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         result = new ArrayList<String>();
         result.clear();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        myRef = db.getReference("breakfast");
-        myRef.addChildEventListener(this);
+        db.getReference("breakfast").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    result.add(ds.child("name").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        db.getReference("brunch").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    result.add(ds.child("name").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         tos = Toast.makeText(this,"",Toast.LENGTH_SHORT);
     }
 
     public void gotolist(View v)
     {
-        Intent balance_it = new Intent(this,ListActivity.class);
-        startActivity(balance_it);
+        txv.setText(Integer.toString(result.size()));
+        /*Intent balance_it = new Intent(this,ListActivity.class);
+        startActivity(balance_it);*/
     }
 
     public void cli(View V) {
@@ -83,32 +109,5 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-
-
-    @Override
-    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        result.add(String.valueOf(dataSnapshot.child("name").getValue().toString()));
-    }
-
-    @Override
-    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-    }
-
-    @Override
-    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
     }
 }
