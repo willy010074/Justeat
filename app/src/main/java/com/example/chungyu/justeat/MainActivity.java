@@ -162,6 +162,19 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         }
     }
 
+    public void info(View V){
+        final View view = View.inflate(this,R.layout.info,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("說明").setView(view).setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     public void push(View V){
         //LayoutInflater inflater = this.getLayoutInflater();
         final View view = View.inflate(this,R.layout.my_dialog,null);
